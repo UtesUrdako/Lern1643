@@ -6,7 +6,10 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _spawnBulletPoint;
+    [SerializeField] private Transform _enemy;
     public float speed = 2;
+    public float bulletSpeed = 2;
+    public float speedRotation = 20f;
 
     [HideInInspector] public float damage;
     private Vector3 _direction;
@@ -22,7 +25,8 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void Update()
@@ -34,22 +38,6 @@ public class Player : MonoBehaviour
 
         _direction.x = Input.GetAxis("Horizontal");
         _direction.z = Input.GetAxis("Vertical");
-
-
-
-        //if (Input.GetKey(KeyCode.W))
-        //    _direction.z = 1;
-        //else if (Input.GetKey(KeyCode.S))
-        //    _direction.z = -1;
-        //else
-        //    _direction.z = 0;
-
-        //if (Input.GetKey(KeyCode.D))
-        //    _direction.x = 1;
-        //else if (Input.GetKey(KeyCode.A))
-        //    _direction.x = -1;
-        //else
-        //    _direction.x = 0;
     }
 
     private void FixedUpdate()
@@ -61,19 +49,21 @@ public class Player : MonoBehaviour
         }
 
         Move();
+
+        transform.Rotate(0, Input.GetAxis("Mouse X") * Time.fixedDeltaTime * speedRotation, 0);
     }
 
     private void Move()
     {
-        Vector3 direction = _direction * ((_isSprint) ? speed * 2 : speed) * Time.fixedDeltaTime;
+        Vector3 direction = _direction.normalized * ((_isSprint) ? speed * 2 : speed) * Time.fixedDeltaTime;
         //transform.Translate(direction);
         transform.position += direction;
     }
 
     private void Fire()
     {
-        GameObject bulletObject = Instantiate(_bulletPrefab, _spawnBulletPoint.position, Quaternion.identity);
+        GameObject bulletObject = Instantiate(_bulletPrefab, _spawnBulletPoint.position, _spawnBulletPoint.rotation);
         Bullet bullet = bulletObject.transform.gameObject.GetComponent<Bullet>();
-        bullet.Initialization(damage, 3f);
+        bullet.Initialization(damage, 30f, bulletSpeed, _enemy);
     }
 }

@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class TestScropt : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void OnCollisionEnter(Collision collision)
     {
-
+        GameObject go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        go.transform.localScale = Vector3.one * 0.1f;
+        go.transform.position = collision.GetContact(0).point;
+        Destroy(go.GetComponent<SphereCollider>());
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnCollisionStay(Collision collision)
+    {
+        
+    }
+
+    private void OnCollisionExit(Collision collision)
     {
         
     }

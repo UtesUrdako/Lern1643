@@ -5,6 +5,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public Player player;
+    public Transform head;
+    public float speedRotationHead = 20f;
 
     private void Awake()
     {
@@ -14,12 +16,14 @@ public class Enemy : MonoBehaviour
     void Start()
     {
 
-        Debug.Log($"Hit {player.name}");
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        Vector3 direction = player.transform.position - head.position;
+        Vector3 forwardDirection = new Vector3(direction.x, 0, direction.z);
+        Vector3 stepDirection = Vector3.RotateTowards(head.forward, forwardDirection, speedRotationHead * Time.fixedDeltaTime, 0.0f);
+        head.rotation = Quaternion.LookRotation(stepDirection);
     }
 }
