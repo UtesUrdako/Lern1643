@@ -45,7 +45,7 @@ public class Door : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             _player = other.transform;
-            Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+            //Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
         }
     }
 

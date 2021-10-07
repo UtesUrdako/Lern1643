@@ -57,6 +57,7 @@ public class Player : MonoBehaviour
     {
         Vector3 direction = _direction.normalized * ((_isSprint) ? speed * 2 : speed) * Time.fixedDeltaTime;
         //transform.Translate(direction);
+        direction = transform.TransformDirection(direction);
         transform.position += direction;
     }
 
