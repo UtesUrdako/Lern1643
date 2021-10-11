@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     public Transform head;
     public float speedRotationHead = 20f;
     public NavMeshAgent navMeshAgent;
-    public Transform[] waypoints;
+    public List<Transform> waypoints;
     private int m_CurrentWaypointIndex;
 
     private void Awake()
@@ -18,8 +18,12 @@ public class Enemy : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
-    void Start()
+    public void Initialization(params Transform[] waypoints)
     {
+        if (this.waypoints == null)
+            this.waypoints = new List<Transform>();
+
+        this.waypoints.AddRange(waypoints);
         navMeshAgent.SetDestination(waypoints[0].position);
     }
 
@@ -28,7 +32,7 @@ public class Enemy : MonoBehaviour
     {
         if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
         {
-            m_CurrentWaypointIndex = (m_CurrentWaypointIndex + 1) % waypoints.Length;
+            m_CurrentWaypointIndex = (m_CurrentWaypointIndex + 1) % waypoints.Count;
             navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
         }
 
