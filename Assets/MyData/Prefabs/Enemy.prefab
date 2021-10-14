@@ -439,7 +439,8 @@ MonoBehaviour:
   player: {fileID: 0}
   head: {fileID: 2227164102952435582}
   speedRotationHead: 2
-  _agent: {fileID: 0}
+  navMeshAgent: {fileID: 0}
+  waypoints: []
 --- !u!195 &6099892238265853224
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -469,6 +470,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2480993317418072318, guid: 057e43206e4b0ab4582e6abb68c241c4,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4865529478006537843, guid: 057e43206e4b0ab4582e6abb68c241c4,
         type: 3}
       propertyPath: m_RootOrder

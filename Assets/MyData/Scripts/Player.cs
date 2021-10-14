@@ -8,8 +8,10 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform _spawnBulletPoint;
     [SerializeField] private Transform _enemy;
     [SerializeField] private Transform _eye;
+    [SerializeField] private Rigidbody _head;
     [SerializeField] private LayerMask _eyeMask;
     private Rigidbody _rb;
+    private Animator _anim;
     public float speed = 2;
     public float jumpForce = 10;
     public float bulletSpeed = 2;
@@ -25,6 +27,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _anim = GetComponent<Animator>();
         _direction = Vector3.zero;
         damage = 4;
         _isCooldown = false;
@@ -38,7 +41,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !_isCooldown)
+        if (Input.GetMouseButtonDown(0) && !_isCooldown && _direction == Vector3.zero)
             _isFire = true;
 
         if (Input.GetButtonDown("Jump"))
@@ -56,7 +59,7 @@ public class Player : MonoBehaviour
         {
             _isCooldown = true;
             _isFire = false;
-            Fire();
+            _anim.SetTrigger("Attack");
         }
 
         Move();
@@ -71,6 +74,10 @@ public class Player : MonoBehaviour
         //transform.Translate(direction);
         direction = transform.TransformDirection(direction);
         _rb.MovePosition(transform.position + direction);
+        if (_direction != Vector3.zero)
+            _anim.SetBool("Move", true);
+        else
+            _anim.SetBool("Move", false);
     }
 
     private void Rotate()
@@ -78,6 +85,7 @@ public class Player : MonoBehaviour
         float y = Input.GetAxis("Mouse X") * Time.fixedDeltaTime * speedRotation;
         Quaternion newRotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y + y, transform.eulerAngles.z);
         _rb.MoveRotation(newRotation);
+
     }
 
     private void Fire()

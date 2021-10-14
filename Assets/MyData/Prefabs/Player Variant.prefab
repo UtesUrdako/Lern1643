@@ -113,26 +113,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
---- !u!114 &111740548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8809417237787303608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 649ba9ad4e69b3249bbd9419df7f7d55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bulletPrefab: {fileID: 3506880272354188301, guid: 149e48e98142b8b4c8081a60809bca82,
-    type: 3}
-  _spawnBulletPoint: {fileID: 930520467}
-  _enemy: {fileID: 0}
-  speed: 2
-  bulletSpeed: 4
-  speedRotation: 20
-  damage: 0
 --- !u!54 &126942637
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -196,6 +176,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2480993317418072318, guid: 057e43206e4b0ab4582e6abb68c241c4,
+        type: 3}
+      propertyPath: bulletSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2480993317418072318, guid: 057e43206e4b0ab4582e6abb68c241c4,
+        type: 3}
+      propertyPath: _bulletPrefab
+      value: 
+      objectReference: {fileID: 3506880272354188301, guid: 149e48e98142b8b4c8081a60809bca82,
+        type: 3}
+    - target: {fileID: 2480993317418072318, guid: 057e43206e4b0ab4582e6abb68c241c4,
+        type: 3}
+      propertyPath: _spawnBulletPoint
+      value: 
+      objectReference: {fileID: 930520467}
     - target: {fileID: 3151121760666978202, guid: 057e43206e4b0ab4582e6abb68c241c4,
         type: 3}
       propertyPath: m_TagString
