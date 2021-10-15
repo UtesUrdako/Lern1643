@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public enum AxisRotate
+    {
+        X, Y, Z
+    }
+
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _spawnBulletPoint;
     [SerializeField] private Transform _enemy;
     [SerializeField] private Transform _eye;
-    [SerializeField] private Rigidbody _head;
+    [SerializeField] private Transform _head;
     [SerializeField] private LayerMask _eyeMask;
     private Rigidbody _rb;
     private Animator _anim;
@@ -17,6 +22,15 @@ public class Player : MonoBehaviour
     public float bulletSpeed = 2;
     public float speedRotation = 20f;
     public float timeCooldawn = 5f;
+
+    public AxisRotate axis;
+    public float sensitivityHor = 9.0f;
+    public float sensitivityVert = 9.0f;
+
+    public float minimumVert = -45.0f;
+    public float maximumVert = 45.0f;
+
+    private float _rotation = 0;
 
     [HideInInspector] public float damage;
     private Vector3 _direction;
@@ -31,6 +45,9 @@ public class Player : MonoBehaviour
         _direction = Vector3.zero;
         damage = 4;
         _isCooldown = false;
+        Rigidbody body = _head.GetComponent<Rigidbody>();
+        if (body != null)
+            body.freezeRotation = true;
     }
 
     void Start()
@@ -65,6 +82,7 @@ public class Player : MonoBehaviour
         Move();
         Rotate();
         Show();
+        HeadRotate();
         //transform.Rotate(0, , 0);
     }
 
@@ -85,8 +103,40 @@ public class Player : MonoBehaviour
         float y = Input.GetAxis("Mouse X") * Time.fixedDeltaTime * speedRotation;
         Quaternion newRotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y + y, transform.eulerAngles.z);
         _rb.MoveRotation(newRotation);
-
     }
+
+    private void HeadRotate()
+    {
+        float input = ClampInputMouseAxis(Input.GetAxis("Mouse Y")) * sensitivityVert;
+
+        _rotation = axis switch
+        {
+            AxisRotate.X => _head.localEulerAngles.x - input,
+            AxisRotate.Z => _head.localEulerAngles.z + input,
+            _ => 0
+        };
+
+        _rotation = ClampRotation(_rotation, sensitivityVert, minimumVert, maximumVert);
+
+        _head.localEulerAngles = axis switch
+        {
+            AxisRotate.X => new Vector3(_rotation, _head.localEulerAngles.y, _head.localEulerAngles.z),
+            AxisRotate.Z => new Vector3(_head.localEulerAngles.x, _head.localEulerAngles.y, _rotation),
+            _ => Vector3.zero
+        };
+    }
+
+    private float ClampRotation(float value, float sensitivity, float min, float max)
+    {
+        if (value > max + 1 && value < 360 + min - sensitivity - 1)
+            value = max;
+        if (value < 360 + min - 1 && value > max + sensitivity + 1)
+            value = 360 + min;
+        return value;
+    }
+
+    private float ClampInputMouseAxis(float input) =>
+        (input > 1) ? 1 : (input < -1) ? -1 : input;
 
     private void Fire()
     {
@@ -100,7 +150,7 @@ public class Player : MonoBehaviour
     {
         if (Physics.Raycast(_eye.position, _eye.forward, out RaycastHit hit, 20f, _eyeMask))
         {
-            Debug.Log(hit.point);
+            //Debug.Log(hit.point);
             Debug.DrawRay(_eye.position, _eye.forward * hit.distance, Color.blue, Time.deltaTime);
         }
     }
