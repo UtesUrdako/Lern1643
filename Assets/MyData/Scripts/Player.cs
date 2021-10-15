@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
         _direction = Vector3.zero;
         damage = 4;
         _isCooldown = false;
-        Rigidbody body = _head.GetComponent<Rigidbody>();
+        Rigidbody body = _head?.GetComponent<Rigidbody>();
         if (body != null)
             body.freezeRotation = true;
     }
