@@ -17,11 +17,13 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask _eyeMask;
     private Rigidbody _rb;
     private Animator _anim;
+    public AudioClip[] swordSounds;
+    private AudioSource _audioSource;
     public float speed = 2;
     public float jumpForce = 10;
     public float bulletSpeed = 2;
     public float speedRotation = 20f;
-    public float timeCooldawn = 5f;
+    public float timeCooldawn = 0.5f;
 
     public AxisRotate axis;
     public float sensitivityHor = 9.0f;
@@ -42,6 +44,7 @@ public class Player : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _anim = GetComponent<Animator>();
+        _audioSource = GetComponent<AudioSource>();
         _direction = Vector3.zero;
         damage = 4;
         _isCooldown = false;
@@ -143,6 +146,10 @@ public class Player : MonoBehaviour
         GameObject bulletObject = Instantiate(_bulletPrefab, _spawnBulletPoint.position, _spawnBulletPoint.rotation);
         Bullet bullet = bulletObject.transform.gameObject.GetComponent<Bullet>();
         bullet.Initialization(damage, 30f, bulletSpeed, _enemy);
+
+        _audioSource.clip = swordSounds[Random.Range(0, swordSounds.Length)];
+        _audioSource.Play();
+
         Invoke("Cooldown", timeCooldawn);
     }
 

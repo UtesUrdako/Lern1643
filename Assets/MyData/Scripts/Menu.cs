@@ -8,11 +8,13 @@ public class Menu : MonoBehaviour
 {
     public Button startGameButton;
     public InputField s;
+    public Slider slider;
 
     void Start()
     {
         startGameButton.onClick.AddListener(StartLevel);
-        s.onValueChanged.AddListener(SS);
+        //s.onValueChanged.AddListener(SS);
+        slider.onValueChanged.AddListener(SliderValue);
     }
 
     private void StartLevel()
@@ -25,8 +27,8 @@ public class Menu : MonoBehaviour
         Application.Quit();
     }
 
-    private void SS(string str)
+    private void SliderValue(float val)
     {
-
+        Settings.volume = val;
     }
 }
